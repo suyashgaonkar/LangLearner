@@ -28,17 +28,21 @@ namespace LangLearner.Models.Entities
 
     public class Language
     {
-        [Required(ErrorMessage = "code should be there dude")]
+        [Required(ErrorMessage = "language code must be present")]
         [MaxLength(4)]
         public string? Code { get; set; }
 
         [Required]
         [MaxLength(100)]
+        [Key]
         public string? Name { get; set; }
 
         [Required]
         [MaxLength(100)]
         public string? NativeName { get; set; }
+
+        public ICollection<User>? NativeLanguageUsers { get; set; } = null;
+        public ICollection<User>? AppLanguageUsers { get; set; } = null;
         // TODO: icon
     }
 }

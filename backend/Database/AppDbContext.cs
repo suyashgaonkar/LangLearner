@@ -12,6 +12,7 @@ namespace LangLearner.Database
         }
 
         public DbSet<Language> Languages { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,19 @@ namespace LangLearner.Database
                 .IsUnique();
 
 
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.NativeLanguage)
+                .WithMany(l => l.NativeLanguageUsers)
+                .HasForeignKey(u => u.NativeLanguageName)
+                .HasPrincipalKey(l => l.Name)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.AppLanguage)
+                .WithMany(l => l.AppLanguageUsers)
+                .HasForeignKey(u => u.AppLanguageName)
+                .HasPrincipalKey(l => l.Name)
+                .OnDelete(DeleteBehavior.Restrict); 
 
             //modelBuilder.Entity<Language>()
             //    .Property(l => l.Name)
