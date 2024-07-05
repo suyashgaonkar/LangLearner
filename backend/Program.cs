@@ -6,9 +6,36 @@ using System;
 using NLog.Web;
 using LangLearner.Services;
 using LangLearner.Database.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Identity;
+using LangLearner.Models.Entities;
+using LangLearner.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = "https://LangLearner.com",
+        ValidAudience = "https://LangLearner.com",
+        IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes("secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12")),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+    };
+});
+
+builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(option =>
@@ -16,8 +43,20 @@ builder.Services.AddDbContext<AppDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Host.UseNLog();
+// Services
 builder.Services.AddScoped<ILanguagesService, LanguagesService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IIdentityService, IdentityService>();
+
+// Repositories
 builder.Services.AddScoped<ILanguageRepository, LanguageRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Middlewares
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,8 +69,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
