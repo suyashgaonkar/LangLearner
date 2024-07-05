@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
@@ -19,8 +21,6 @@
 
   <ItemGroup>
     <Folder Include="Models\Dtos\Mutual\" />
-    <Folder Include="Exceptions\" />
-    <Folder Include="Middlewares\" />
     <Folder Include="Models\Enumerations\" />
   </ItemGroup>
 
