@@ -1,4 +1,5 @@
-﻿using LangLearner.Database;
+﻿using AutoMapper;
+using LangLearner.Database;
 using LangLearner.Database.Repositories;
 using LangLearner.Models.Dtos.Responses;
 using LangLearner.Models.Entities;
@@ -10,17 +11,21 @@ namespace LangLearner.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LanguagesController : ControllerBase
+    public class LanguageController : ControllerBase
     {
         public readonly ILanguagesService _languagesService;
         public readonly ILanguageRepository _languageRepository;
-        public readonly ILogger<LanguagesController> _logger;
+        public readonly ILogger<LanguageController> _logger;
+        private readonly IMapper _mapper;
 
-        public LanguagesController(ILanguageRepository languageRepository, ILanguagesService languagesService, ILogger<LanguagesController> logger)
+        public LanguageController(ILanguageRepository languageRepository, ILanguagesService languagesService, ILogger<LanguageController> logger
+            , IMapper mapper
+            )
         {
             _languageRepository = languageRepository;
             _languagesService = languagesService;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,7 +35,10 @@ namespace LangLearner.Controllers
         {
             IEnumerable<Language> languages = _languagesService.getAvailableLanguages();
             if (languages.Any())
-                return Ok(languages);
+            {
+                IEnumerable<LanguageDto> languagesDto = _mapper.Map<IEnumerable<LanguageDto>>(languages);
+                return Ok(languagesDto);
+            }
 
             _logger.LogError("Languages table is probably empty! Should contain values");
             return NotFound(new ApiError { ErrorMessage="No language found!", StatusCode=StatusCodes.Status404NotFound});
