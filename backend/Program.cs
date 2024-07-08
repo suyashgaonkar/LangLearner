@@ -12,6 +12,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using LangLearner.Models.Entities;
 using LangLearner.Middlewares;
+using LangLearner.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,11 @@ builder.Services.AddAuthentication(x =>
 });
 
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    //options.Filters.Add(new ValidateModelFilter());
+    options.Filters.Add<ValidateModelFilter>(int.MinValue);
+});
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
