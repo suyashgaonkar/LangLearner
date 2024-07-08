@@ -17,7 +17,6 @@ namespace LangLearner.Models.Dtos.Requests
         [Required]
         public string NativeLanguageName { get; set; } = string.Empty;
 
-        [Required]
         public string AppLanguageName { get; set; } = string.Empty;
     }
 }

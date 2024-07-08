@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace LangLearner.Models.Entities
@@ -21,7 +22,7 @@ namespace LangLearner.Models.Entities
 
         [Required]
         [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Invalid email address format.")]
-        public string? Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         public string HashedPassword { get; set; } = string.Empty;

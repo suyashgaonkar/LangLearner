@@ -33,21 +33,17 @@ namespace LangLearner.Controllers
         [HttpPost("register")]
         public ActionResult<TokenDto> Register([FromBody] CreateUserDto userDto)
         {
-            string? token = _userService.Register(userDto);
-            if (token == null || token == string.Empty)
-            {
-                // TODO
-                throw new Exception("Token cannot be empty!");
-            }
+            string token = _userService.Register(userDto);
+
             return CreatedAtAction(nameof(Register), new TokenDto() { Token=token});
         }
 
         [HttpPost("login")]
         public ActionResult<TokenDto> Login([FromBody] LoginUserDto userDto)
         {
-            string? token = _userService.Login(userDto);
-            if (token == null || token == string.Empty)
-                return Unauthorized(new ApiError() { ErrorMessage ="Bad credentials provided!", StatusCode=401});
+            string token = _userService.Login(userDto);
+            //if (token == null || token == string.Empty)
+            //    return Unauthorized(new ApiError() { ErrorMessage ="Bad credentials provided!", StatusCode=401});
             return Ok(new TokenDto() { Token = token });
         }
 
@@ -60,11 +56,7 @@ namespace LangLearner.Controllers
                 return BadRequest(ModelState);
             }
             int userId = int.Parse(User.Claims.First(c => c.Type == "UserId").Value);
-            User? user = _userRepository.GetUserById(userId);
-
-            if (user == null)
-                //throw new UnauthorizedException();
-                throw new Exception();
+            User? user = _userRepository.GetUserById(userId) ?? throw new Exception();
 
             UserStatsDto userStatsDto = _mapper.Map<UserStatsDto>(user);
 

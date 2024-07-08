@@ -8,7 +8,7 @@ namespace LangLearner.Services
 {
     public interface IIdentityService
     {
-        public string? GenerateToken(TokenClaims request);
+        public string GenerateToken(TokenClaims request);
     }
 
     public class IdentityService : IIdentityService
@@ -16,7 +16,7 @@ namespace LangLearner.Services
         private const string TokenSecret = "secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12";
         private static readonly TimeSpan TokenLifetime = TimeSpan.FromDays(100);
 
-        public string? GenerateToken(TokenClaims request)
+        public string GenerateToken(TokenClaims request)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -38,8 +38,8 @@ namespace LangLearner.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
             };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var jwt = tokenHandler.WriteToken(token);
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+            string jwt = tokenHandler.WriteToken(token);
 
             return jwt;
         }
