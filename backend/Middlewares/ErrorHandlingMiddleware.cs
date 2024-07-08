@@ -19,6 +19,15 @@ namespace LangLearner.Middlewares
             {
                 await next.Invoke(context);
             }
+            catch (APIValidationException e)
+            {
+                Console.WriteLine("aaaaaaaaaaaa");
+                context.Response.StatusCode = e.StatusCode;
+                context.Response.ContentType = "application/json";
+                var errorResponse = new ApiValidationError { ErrorMessage = e.Message, StatusCode = e.StatusCode, Errors=e.Errors };
+                var errorJson = JsonSerializer.Serialize(errorResponse);
+                await context.Response.WriteAsync(errorJson);
+            }
             catch (GeneralAPIException e)
             {
                 context.Response.StatusCode = e.StatusCode;
