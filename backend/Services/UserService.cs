@@ -68,7 +68,7 @@ namespace LangLearner.Services
             if(_userRepository.GetUserByEmail(newUser.Email) != null)
                 throw new GeneralAPIException("User with provided email already exists") { StatusCode = 409 };
 
-            if(_languageRepository.GetLanguageByAny(userDto.AppLanguageName) == null || _languageRepository.GetLanguageByAny(userDto.NativeLanguageName) == null)
+            if(_languageRepository.GetLanguageByAny(newUser.AppLanguageName) == null || _languageRepository.GetLanguageByAny(newUser.NativeLanguageName) == null)
                 throw new GeneralAPIException("Provided application or native language is not supported") { StatusCode = 400 };
 
             newUser = _userRepository.AddUser(newUser);
