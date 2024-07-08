@@ -9,6 +9,7 @@ namespace LangLearner.Database.Repositories
     {
         User? GetUserById(int id);
         User? GetUserByEmail(string email);
+        User? GetUserByUserName(string email);
         User AddUser(User user);
     }
     public class UserRepository : IUserRepository
@@ -24,7 +25,6 @@ namespace LangLearner.Database.Repositories
 
         public User AddUser(User user)
         {
-            if (_context.Users.FirstOrDefault(u => user.Email == u.Email) != null) throw new GeneralAPIException("User with provided data already exists") { StatusCode = 409};
             _context.Users.Add(user);
             _context.SaveChanges();
             return user;
@@ -38,6 +38,11 @@ namespace LangLearner.Database.Repositories
         public User? GetUserById(int id)
         {
             return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public User? GetUserByUserName(string username)
+        {
+            return _context.Users.FirstOrDefault(u => u.UserName == username);
         }
     }
 }

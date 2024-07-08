@@ -40,6 +40,15 @@ namespace LangLearner.Database
                 .HasPrincipalKey(l => l.Name)
                 .OnDelete(DeleteBehavior.Restrict); 
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.UserName)
+                .IsUnique();
+
+
             //modelBuilder.Entity<Language>()
             //    .Property(l => l.Name)
             //    .HasMaxLength(100);
