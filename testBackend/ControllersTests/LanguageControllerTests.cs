@@ -16,9 +16,9 @@ namespace testBackend.controllersTests
     {
         private readonly IFixture _fixture;
         private readonly Mock<ILanguageRepository> _languageRepositoryMock;
-        private readonly ILanguagesService _languagesService;
         private readonly Mock<ILogger<LanguageController>> _loggerMock;
         //private readonly Mock<IMapper> _mapperMock;
+        private readonly ILanguagesService _languagesService;
         private readonly IMapper _mapper;
 
 
