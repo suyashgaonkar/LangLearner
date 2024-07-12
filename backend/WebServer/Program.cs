@@ -44,18 +44,19 @@ builder.Services.AddControllers(options =>
     options.Filters.Add<ValidateModelFilter>(int.MinValue);
 });
 
+
+string dbServer = Environment.GetEnvironmentVariable("DB_SERVER") ?? "langlearnerDB";
+string dbName = Environment.GetEnvironmentVariable("DB_NAME") ?? "langlearnerDB";
+string saPassword = Environment.GetEnvironmentVariable("SA_PASSWORD") ?? "YourPassword123";
+builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Server={dbServer};Database={dbName};User Id=sa;Password={saPassword};TrustServerCertificate=True";
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    //var connectionString = $"Data Source={dbHost},1433;Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
-
-    option.UseSqlServer("Server=langlearnerDB;Database=langlearnerDB;User Id=sa;Password=YourPassword123;Encrypt=true;TrustServerCertificate=true;");
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
-//builder.Services.AddDbContext<ApplicationDbContext>(
-//    options => options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
 
 
 builder.Host.UseNLog();
+
 // Services
 builder.Services.AddScoped<ILanguagesService, LanguagesService>();
 builder.Services.AddScoped<IUserService, UserService>();
