@@ -13,7 +13,7 @@ namespace LangLearner.Services
 
     public class IdentityService : IIdentityService
     {
-        private const string TokenSecret = "secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12";
+        private readonly string TokenSecret = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ?? "secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12";
         private static readonly TimeSpan TokenLifetime = TimeSpan.FromDays(100);
 
         public string GenerateToken(TokenClaims request)

@@ -17,6 +17,9 @@ using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+string secretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") ?? "secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12";
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -29,7 +32,7 @@ builder.Services.AddAuthentication(x =>
         ValidIssuer = "https://LangLearner.com",
         ValidAudience = "https://LangLearner.com",
         IssuerSigningKey = new SymmetricSecurityKey
-            (Encoding.UTF8.GetBytes("secret4w78efhc2783gd671872e2@!WDX!@#!~!@$!@E@!1wd12")),
+            (Encoding.UTF8.GetBytes(secretKey)),
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
@@ -105,7 +108,6 @@ try
 catch (Exception ex)
 {
   app.Logger.LogError(ex, " and error occured during migration or seeding");
-
 }
 
 app.Run();
