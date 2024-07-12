@@ -10,7 +10,6 @@ services:
       SA_PASSWORD: "YourPassword123"
     ports:
       - 1433:1433
-
     volumes:
       - "mssql_volume:/var/opt/mssql/"
   
@@ -30,6 +29,7 @@ services:
       DB_SERVER: "langlearnerDB"
       DB_NAME: "langlearnerDB"
       SA_PASSWORD: "YourPassword123"
+      JWT_SECRET_KEY: "HJVSD#@C23WAS!@#eDE345Y6H4dwqa@!rg#$asd!@$da@!#1344t3g5f42SD#@F"
 
 volumes:
   mssql_volume:
