@@ -1,2 +1,3 @@
 temp.txt
-backend/logs
+backend/WebServer/logs
+backend/WebServer/.containers

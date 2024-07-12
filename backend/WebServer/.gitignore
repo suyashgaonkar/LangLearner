@@ -33,3 +33,4 @@ msbuild.wrn
 .vs/
 
 # custom files and directories
+logs/
