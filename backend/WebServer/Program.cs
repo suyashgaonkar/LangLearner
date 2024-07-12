@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using LangLearner.Models.Entities;
 using LangLearner.Middlewares;
 using LangLearner.Filters;
+using System.Xml.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,8 +46,15 @@ builder.Services.AddControllers(options =>
 
 builder.Services.AddDbContext<AppDbContext>(option =>
 {
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    //var connectionString = $"Data Source={dbHost},1433;Initial Catalog={dbName};User ID=sa;Password={dbPassword}";
+
+    option.UseSqlServer("Server=langlearnerDB;Database=langlearnerDB;User Id=sa;Password=YourPassword123;Encrypt=true;TrustServerCertificate=true;");
 });
+
+//builder.Services.AddDbContext<ApplicationDbContext>(
+//    options => options.UseNpgsql(builder.Configuration.GetConnectionString("Database")));
+
+
 builder.Host.UseNLog();
 // Services
 builder.Services.AddScoped<ILanguagesService, LanguagesService>();
@@ -95,7 +103,8 @@ try
 }
 catch (Exception ex)
 {
-    app.Logger.LogError(ex, " and error occured during migration or seeding");
+  app.Logger.LogError(ex, " and error occured during migration or seeding");
+
 }
 
 app.Run();

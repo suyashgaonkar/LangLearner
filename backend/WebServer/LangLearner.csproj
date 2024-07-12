@@ -5,6 +5,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  <UserSecretsId>6cc7cba1-2088-4d46-89e2-e3371ebf21dd</UserSecretsId>
+  <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  <DockerfileContext>.</DockerfileContext>
+  <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 
   </PropertyGroup>
 
@@ -17,7 +21,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   
   </ItemGroup>

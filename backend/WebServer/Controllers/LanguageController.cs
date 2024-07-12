@@ -44,6 +44,12 @@ namespace LangLearner.Controllers
             return NotFound(new ApiError { ErrorMessage="No language found!", StatusCode=StatusCodes.Status404NotFound});
         }
 
+        [HttpGet("ad")]
+        public ActionResult<int> GetTemp()
+        {
+            return 1;
+        }
+
         [HttpGet("{value}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -1,0 +1,34 @@
+version: '3.4'
+
+services:
+  langlearnerDB:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: langlearnerDB
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourPassword123"
+      SA_PASSWORD: "YourPassword123"
+    ports:
+      - 1433:1433
+
+  langlearner:
+    image: ${DOCKER_REGISTRY-}langlearner
+    container_name: langlearnerWeb
+    build:
+      context: WebServer
+      dockerfile: Dockerfile
+    ports:
+      - "5242:5242"
+      - "7037:7037"
+    depends_on: 
+      - langlearnerDB
+
+    environment:
+      DB_SERVER: "langlearnerDB"
+      DB_NAME: "langlearnerDB"
+      SA_PASSWORD: "YourPassword123"
+
+
+
+    
+    
