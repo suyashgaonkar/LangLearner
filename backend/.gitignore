@@ -34,3 +34,6 @@ msbuild.wrn
 
 # custom files and directories
 .containers/
+data/
+log/
+secrets/
