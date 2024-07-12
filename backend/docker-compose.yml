@@ -11,6 +11,9 @@ services:
     ports:
       - 1433:1433
 
+    volumes:
+      - "mssql_volume:/var/opt/mssql/"
+  
   langlearner:
     image: ${DOCKER_REGISTRY-}langlearner
     container_name: langlearnerWeb
@@ -28,7 +31,5 @@ services:
       DB_NAME: "langlearnerDB"
       SA_PASSWORD: "YourPassword123"
 
-
-
-    
-    
+volumes:
+  mssql_volume:
