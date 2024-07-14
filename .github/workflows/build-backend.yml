@@ -48,7 +48,7 @@ jobs:
       
     - name: Test
       working-directory: ./testBackend
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test --verbosity normal
 
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
