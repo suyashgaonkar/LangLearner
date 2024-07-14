@@ -39,7 +39,7 @@ jobs:
       run: |
         cd ./backend/WebServer
         dotnet restore --locked-mode
-        cd ./testBackend
+        cd ../../testBackend
         dotnet restore
           
     - name: Build
