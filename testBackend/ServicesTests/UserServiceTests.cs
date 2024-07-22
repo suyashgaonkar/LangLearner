@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace testBackend.ServicesTests
         private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly Mock<ILanguageRepository> _languageRepositoryMock;
 
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly Mock<IPasswordHasher<User>> _passwordHasherMock;
         private readonly IUserService _userService;
         private readonly Mock<IIdentityService> _identityServiceMock;
         private readonly IMapper _mapper;
@@ -38,13 +39,11 @@ namespace testBackend.ServicesTests
                 cfg.AddProfile(new AutoMapperProfile());
             });
             _mapper = mockMapper.CreateMapper();
-
             _userRepositoryMock = new Mock<IUserRepository>();
             _languageRepositoryMock = new Mock<ILanguageRepository>();
-            _passwordHasher = new PasswordHasher<User>();
+            _passwordHasherMock = new Mock<IPasswordHasher<User>>();
             _identityServiceMock = new Mock<IIdentityService>();
-
-            _userService = new UserService(_userRepositoryMock.Object, _languageRepositoryMock.Object, _passwordHasher, _mapper, _identityServiceMock.Object);
+            _userService = new UserService(_userRepositoryMock.Object, _languageRepositoryMock.Object, _passwordHasherMock.Object, _mapper, _identityServiceMock.Object);
         }
 
 
@@ -146,7 +145,6 @@ namespace testBackend.ServicesTests
             // Arrange
             string email = "testUser@mail.com";
             string username = "testUserName";
-            string tokenMock = "someToken";
             string password = "password";
             var correctLanguage = new Language() { };
             var newUserDto = new CreateUserDto()
@@ -245,5 +243,55 @@ namespace testBackend.ServicesTests
             Assert.Equal("User with provided email already exists", exception.Message);
             Assert.Equal(409, exception.StatusCode);
         }
+
+        [Fact]
+        public void LoginUserInvalidPassword()
+        {
+            string email = "testUser@mail.com";
+            string notValidpassword = "notPassword";
+            string hashedPassword = "hashedPassword";
+            User user = new User() { Email = email, HashedPassword =  hashedPassword};
+            LoginUserDto loginUserDto = new LoginUserDto() { Email = email, Password = notValidpassword };
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
+            _passwordHasherMock.Setup(hasher => hasher.VerifyHashedPassword(user, hashedPassword, notValidpassword)).Returns(PasswordVerificationResult.Failed);
+            var exception = Assert.Throws<GeneralAPIException>(() => _userService.Login(loginUserDto));
+            Assert.Equal("Bad credentials provided!", exception.Message);
+            Assert.Equal(401, exception.StatusCode);    
+
+
+        }
+
+        [Fact]
+        public void LoginUserEmailNotExists()
+        {
+            string badEmail = "badEmail@mail.com";
+            string notValidpassword = "notPassword";
+            
+            LoginUserDto loginUserDto = new LoginUserDto() { Email = badEmail, Password = notValidpassword };
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmail(badEmail)).Returns((User?)null);
+            var exception = Assert.Throws<GeneralAPIException>(() => _userService.Login(loginUserDto));
+            
+            Assert.Equal("Bad credentials provided!", exception.Message);
+            Assert.Equal(401, exception.StatusCode);
+        }
+
+        [Fact]
+        public void LoginUserSuccess()
+        {
+            string email = "email@mail.com";
+            string password = "password";
+            string hashedPassword = "hashedPassword";
+            string generatedToken = "si821@C#C@#!@#E";            
+            LoginUserDto loginUserDto = new LoginUserDto() { Email = email, Password = password };
+            User user = new User() { Email= email, HashedPassword= hashedPassword};
+            _userRepositoryMock.Setup(repo => repo.GetUserByEmail(email)).Returns(user);
+            _passwordHasherMock.Setup(hasher => hasher.VerifyHashedPassword(user, hashedPassword, password)).Returns(PasswordVerificationResult.Success);
+            _identityServiceMock.Setup(service => service.GenerateToken(It.IsAny<TokenClaims>()))
+                               .Returns(generatedToken);
+
+            string resultToken = _userService.Login(loginUserDto);
+            Assert.Equal(generatedToken, resultToken);
+        }
+
     }
 }
