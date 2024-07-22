@@ -7,7 +7,6 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "YourPassword123"
-      SA_PASSWORD: "YourPassword123"
     ports:
       - 1433:1433
     volumes:
@@ -20,8 +19,8 @@ services:
       context: WebServer
       dockerfile: Dockerfile
     ports:
-      - "5242:5242"
-      - "7037:7037"
+      - 5242:5242
+      - 7037:7037
     depends_on: 
       - langlearnerDB
 
