@@ -1,6 +1,4 @@
-﻿using LangLearner.Exceptions;
-
-namespace LangLearner.Migrations
+﻿namespace LangLearner.Exceptions
 {
     public class UnauthorizedException : GeneralAPIException
     {
