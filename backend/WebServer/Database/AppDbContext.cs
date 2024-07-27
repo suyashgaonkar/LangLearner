@@ -14,6 +14,8 @@ namespace LangLearner.Database
         public DbSet<Language> Languages { get; set; }
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Course> Courses { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -48,6 +50,34 @@ namespace LangLearner.Database
                 .HasIndex(u => u.UserName)
                 .IsUnique();
 
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.TargetLanguage)
+                .WithMany(l => l.CoursesWithTargetLanguage)
+                .HasForeignKey(c => c.TargetLanguageName)
+                .HasPrincipalKey(l => l.Name)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Course>()
+                .HasOne(c => c.Creator)
+                .WithMany(u => u.CreatedCourses)
+                .HasForeignKey(c => c.CreatorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+
+            modelBuilder.Entity<Course>()
+                .HasMany(c => c.EnrolledUsers)
+                .WithMany(u => u.EnrolledCourses)
+                .UsingEntity(j => j.ToTable("CourseUsers"));
+
+            //modelBuilder.Entity<Course>()
+            //    .HasOne(c => c.Creator)
+            //.WithMany(u => u.CreatedCourses)
+            //.HasForeignKey(c => c.CreatorId)
+            //.OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<Course>()
+            //    .HasOne(c => c.Creator)
+            //    .WithMany(u => u.)
 
             //modelBuilder.Entity<Language>()
             //    .Property(l => l.Name)
