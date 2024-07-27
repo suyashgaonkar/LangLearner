@@ -36,4 +36,5 @@ msbuild.wrn
 .containers/
 data/
 log/
+logs/
 secrets/
