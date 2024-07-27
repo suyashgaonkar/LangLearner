@@ -2,47 +2,23 @@
 
 namespace LangLearner.Models.Entities
 {
-    /*public enum LanguageEnum
-    {
-        English,
-        Spanish,
-        French,
-        German,
-        Chinese,
-        Japanese,
-        Italian,
-        Portuguese
-    }
-
-    public enum LanguageCodeEnum
-    {
-        EN, 
-        ES,
-        FR,
-        DE,
-        ZH,
-        JA, 
-        IT,
-        PT 
-    }*/
-
     public class Language
     {
         [Required(ErrorMessage = "language code must be present")]
         [MaxLength(4)]
-        public string? Code { get; set; }
+        public string Code { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
         [Key]
-        public string? Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
-        public string? NativeName { get; set; }
+        public string NativeName { get; set; } = string.Empty;
 
-        public ICollection<User>? NativeLanguageUsers { get; set; } = null;
-        public ICollection<User>? AppLanguageUsers { get; set; } = null;
-        // TODO: icon
+        public virtual IEnumerable<User>? NativeLanguageUsers { get; set; } = null;
+        public virtual IEnumerable<User>? AppLanguageUsers { get; set; } = null;
+        public virtual IEnumerable<Course>? CoursesWithTargetLanguage { get; set; } = null;
     }
 }

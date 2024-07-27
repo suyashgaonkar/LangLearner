@@ -27,7 +27,13 @@ namespace LangLearner.Models.Entities
         [Required]
         public string HashedPassword { get; set; } = string.Empty;
 
-        public Language? NativeLanguage { get; set; }
-        public Language? AppLanguage { get; set; }
+        public virtual Language? NativeLanguage { get; set; }
+        public virtual Language? AppLanguage { get; set; }
+
+        public IEnumerable<Course>? EnrolledCourses { get; set; } = null;
+
+        public IEnumerable<Course>? CreatedCourses { get; set; } = null;
+
+
     }
 }
