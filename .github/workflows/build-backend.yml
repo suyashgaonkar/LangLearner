@@ -41,7 +41,7 @@ jobs:
         cd ./backend/WebServer
         dotnet restore --locked-mode
         cd ../../testBackend
-        dotnet restore
+        dotnet restore --locked-mode
           
     - name: Build
       working-directory: ./backend/WebServer
