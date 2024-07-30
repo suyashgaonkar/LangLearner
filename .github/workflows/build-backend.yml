@@ -35,7 +35,6 @@ jobs:
         cache: true
         cache-dependency-path: |
           './backend/WebServer/package.lock.json'
-          './testBackend/package.lock.json'
   
     - name: Restore dependencies
       run: |
