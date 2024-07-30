@@ -34,6 +34,7 @@ jobs:
         dotnet-version: 8.x
         cache-dependency-path: |
           './backend/WebServer'
+          './tetBackend'
   
     - name: Restore dependencies
       run: |
