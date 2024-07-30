@@ -35,7 +35,6 @@ jobs:
         cache: true
         cache-dependency-path: |
           './backend/WebServer'
-          './tetBackend'
   
     - name: Restore dependencies
       run: |
