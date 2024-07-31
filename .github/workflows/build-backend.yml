@@ -6,14 +6,14 @@ name: .NET
 
 on:
   push:
-    branches: [ "master", "test/github-actions" ]
+    branches: [ "master", "suyash-test" ]
     paths-ignore:
       - README.md
       - .vscode/**
       - .gitignore
       
   pull_request:
-    branches: [ "master", "test/github-actions" ]
+    branches: [ "master",  "suyash-test"]
     paths-ignore:
       - README.md
       - .vscode/**
