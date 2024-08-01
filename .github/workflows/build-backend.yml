@@ -38,7 +38,9 @@ jobs:
     - name: cache dependencies
       uses: actions/cache@v4
       with:
-        path: ~/.nuget/packages
+        path: |
+          ~/.backend/WebServer
+          ~/.testBackend
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
 
     - name: Restore dependencies
