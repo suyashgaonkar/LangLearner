@@ -34,8 +34,8 @@ jobs:
         dotnet-version: 8.x
         cache: true
         cache-dependency-path: |
-        './backend/packages.lock.json'
-        './testBackend/packages.lock.json'
+          './backend/packages.lock.json'
+          './testBackend/packages.lock.json'
   
     - name: Restore dependencies
       run: |
