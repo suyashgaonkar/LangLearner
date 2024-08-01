@@ -32,11 +32,14 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
-        cache: true
-        cache-dependency-path: |
-          './backend/packages.lock.json'
-          './testBackend/packages.lock.json'
-  
+        
+     - name: cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            './backend/WebServer'
+            './testBackend'
+
     - name: Restore dependencies
       run: |
         cd ./backend/WebServer
