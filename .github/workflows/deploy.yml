@@ -1,0 +1,36 @@
+# Web server is in the folder backend.
+# Tests are in the folder testBackend
+
+name: .NET
+
+workflow_dispatch:
+    
+jobs:
+  build-and-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.x
+        cache: true
+        cache-dependency-path: |
+          './backend/WebServer'
+  
+    - name: Restore dependencies
+      run: |
+        cd ./backend/WebServer
+        dotnet restore --locked-mode
+        cd ../../testBackend
+        dotnet restore --locked-mode
+          
+    - name: Build
+      working-directory: ./backend/WebServer
+      run: dotnet build --no-restore
+      
+    - name: Test
+      working-directory: ./testBackend
+      run: dotnet test --verbosity normal
