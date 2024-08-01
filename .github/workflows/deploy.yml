@@ -1,7 +1,7 @@
 # Web server is in the folder backend.
 # Tests are in the folder testBackend
 
-name: .NET
+name: DEPLOY
 
 workflow_dispatch:
     
