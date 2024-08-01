@@ -36,8 +36,8 @@ jobs:
       uses: actions/cache@v4
       with:
           path: |
-            ./backend/WebServer
-            ./testBackend
+            ~/.backend/WebServer
+            ~/.testBackend
     - name: Restore dependencies
       run: |
         cd ./backend/WebServer
