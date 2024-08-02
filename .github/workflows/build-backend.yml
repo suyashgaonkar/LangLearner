@@ -80,6 +80,7 @@ jobs:
         cache: true
         cache-dependency-path: |
           ./backend/packages.lock.json
+          './testbackend/packages.lock.json'
   
     - name: Restore dependencies
       run: |
