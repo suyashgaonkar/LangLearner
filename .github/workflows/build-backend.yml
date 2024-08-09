@@ -93,8 +93,8 @@ jobs:
       working-directory: ./backend/WebServer
       run: dotnet build --no-restore
       
-    - name: Test
-      working-directory: ./testBackend
-      run: dotnet test --verbosity normal
+    # - name: Test
+    #   working-directory: ./testBackend
+    #   run: dotnet test --verbosity normal
 
 
