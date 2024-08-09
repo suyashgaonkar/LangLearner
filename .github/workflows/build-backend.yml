@@ -1,25 +1,70 @@
-# This workflow will build and test a .NET project.
+# # This workflow will build and test a .NET project.
+# # Web server is in the folder backend.
+# # Tests are in the folder testBackend
+
+# name: .NET
+
+# on:
+#   push:
+#     branches: ["suyash-test" ]
+#     paths-ignore:
+#       - README.md
+#       - .vscode/**
+#       - .gitignore
+      
+#   pull_request:
+#     branches: ["suyash-test"]
+#     paths-ignore:
+#       - README.md
+#       - .vscode/**
+#       - .gitignore
+
+#   workflow_dispatch:
+    
+# jobs:
+#   build-and-test:
+
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - uses: actions/checkout@v4
+
+#     - name: Setup .NET
+#       uses: actions/setup-dotnet@v4
+#       with:
+#         dotnet-version: 8.x
+
+
+#     - name: cache dependencies
+#       uses: actions/cache@v4
+#       with:
+#         path: |
+#           ~/.backend/WebServer
+#           ~/.testBackend
+#         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+
+#     - name: Restore dependencies
+#       run: |
+#         cd ./backend/WebServer
+#         dotnet restore --locked-mode
+#         cd ../../testBackend
+#         dotnet restore --locked-mode
+          
+#     - name: Build
+#       working-directory: ./backend/WebServer
+#       run: dotnet build --no-restore
+      
+#     - name: Test
+#       working-directory: ./testBackend
+#       run: dotnet test --verbosity normal
+
 # Web server is in the folder backend.
 # Tests are in the folder testBackend
 
-name: .NET
 
-on:
-  push:
-    branches: [ "master", "test/github-actions" ]
-    paths-ignore:
-      - README.md
-      - .vscode/**
-      - .gitignore
-      
-  pull_request:
-    branches: [ "master", "test/github-actions" ]
-    paths-ignore:
-      - README.md
-      - .vscode/**
-      - .gitignore
+name:  .NET
 
-  workflow_dispatch:
+on: workflow_dispatch
     
 jobs:
   build-and-test:
@@ -34,7 +79,8 @@ jobs:
         dotnet-version: 8.x
         cache: true
         cache-dependency-path: |
-          './backend/WebServer'
+          ./backend/packages.lock.json
+          './testbackend/packages.lock.json'
   
     - name: Restore dependencies
       run: |
@@ -47,6 +93,8 @@ jobs:
       working-directory: ./backend/WebServer
       run: dotnet build --no-restore
       
-    - name: Test
-      working-directory: ./testBackend
-      run: dotnet test --verbosity normal
+    # - name: Test
+    #   working-directory: ./testBackend
+    #   run: dotnet test --verbosity normal
+
+
